@@ -1,6 +1,6 @@
 default:
   tags:
-    - ngc27-xyber-radio
+    - ngc27-echobot
 
 stages: [build, lint, test, deploy]
 
@@ -8,7 +8,7 @@ build:
   stage: build
   script:
     - echo "Building local image..."
-    - "docker build -t xyber-radio:${CI_COMMIT_SHORT_SHA} -t xyber-radio:ci-latest ."
+    - "docker build -t echobot:${CI_COMMIT_SHORT_SHA} -t echobot:ci-latest ."
 
 build_obs_stream_service:
   stage: build
@@ -22,7 +22,7 @@ lint:
   stage: lint
   needs: ["build"]
   script:
-    - "IMAGE=xyber-radio:${CI_COMMIT_SHORT_SHA}"
+    - "IMAGE=echobot:${CI_COMMIT_SHORT_SHA}"
     - echo "Running flake8 lint check..."
     - "docker run --rm --user \"$(id -u):$(id -g)\" -v \"$CI_PROJECT_DIR\":/app -w /app \"$IMAGE\" flake8 ."
     - echo "Running mypy type check (Python 3.13-alpine)..."
@@ -35,8 +35,8 @@ test:
   stage: test
   needs: ["build", "lint"]
   script:
-    - cp /etc/xyber-radio/.env.radio .env
-    - "IMAGE=xyber-radio:${CI_COMMIT_SHORT_SHA}"
+    - cp /etc/echobot/.env.radio .env
+    - "IMAGE=echobot:${CI_COMMIT_SHORT_SHA}"
     - echo "Running tests in $IMAGE..."
     - >-
       cat > .gitlab-ci-test.sh <<'SH'
@@ -63,24 +63,24 @@ run-container:
     MEDIA_HOST_DIR: "/home/wotori/xyber-media"
     MEDIA_CONTAINER_DIR: "/app/media"
   script:
-    - cp /etc/xyber-radio/.env.radio .env
+    - cp /etc/echobot/.env.radio .env
     - >-
       # mkdir -p "$MEDIA_HOST_DIR"/news "$MEDIA_HOST_DIR"/voice/generated_audio # TODO: should be generated based on MediaDirectoryManager class (all folders should be described there and be depoendencies where needed) 
       "$MEDIA_HOST_DIR"/music/soundcloud_songs "$MEDIA_HOST_DIR"/music/google_drive_songs
       "$MEDIA_HOST_DIR"/state "$MEDIA_HOST_DIR"/memory "$MEDIA_HOST_DIR"/videos
-    - "docker rm -f xyber-radio || true"
+    - "docker rm -f echobot || true"
     - >-
-      docker run -d --name xyber-radio --env-file .env
+      docker run -d --name echobot --env-file .env
       -e MEDIA_HOST_DIR="$MEDIA_HOST_DIR" -e MEDIA_CONTAINER_DIR="$MEDIA_CONTAINER_DIR"
       -v "$MEDIA_HOST_DIR":"$MEDIA_CONTAINER_DIR":rw -p 8000:8000
-      --restart unless-stopped "xyber-radio:${CI_COMMIT_SHORT_SHA}"
+      --restart unless-stopped "echobot:${CI_COMMIT_SHORT_SHA}"
     - echo "Waiting for container to start..."
     - sleep 10
-    - "docker logs xyber-radio --tail 20"
+    - "docker logs echobot --tail 20"
     - echo "Validating media directory structure..."
-    - "docker exec xyber-radio ls -la /app/media/"
-    - "docker exec xyber-radio ls -la /app/media/voice/"
-    - "docker exec xyber-radio ls -la /app/media/music/"
+    - "docker exec echobot ls -la /app/media/"
+    - "docker exec echobot ls -la /app/media/voice/"
+    - "docker exec echobot ls -la /app/media/music/"
     - echo "Container deployed successfully with unified media structure"
 
 run_obs_stream_service:
@@ -92,7 +92,7 @@ run_obs_stream_service:
     MEDIA_HOST_DIR: "/home/wotori/xyber-media"
     MEDIA_CONTAINER_DIR: "/app/media"
   script:
-    - cp /etc/xyber-radio/.env.radio .env
+    - cp /etc/echobot/.env.radio .env
     - mkdir -p ./logs
     - "docker rm -f obs_stream_service_container || true"
     - >-

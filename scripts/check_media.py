@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Media Directory Status Checker for XYBER Radio
+Media Directory Status Checker for EchoBot
 
 Usage:
     python scripts/check_media.py          # Check status
@@ -20,14 +20,14 @@ sys.path.insert(0, str(project_root))
 def main() -> None:
     import argparse
 
-    parser = argparse.ArgumentParser(description="Check XYBER Radio media directories")
+    parser = argparse.ArgumentParser(description="Check EchoBot media directories")
     parser.add_argument("--fix", action="store_true", help="Create missing directories")
     parser.add_argument("--info", action="store_true", help="Show detailed information")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
 
     args = parser.parse_args()
 
-    print("🎵 XYBER Radio Media Directory Checker")
+    print("🎵 EchoBot Media Directory Checker")
     print("=" * 50)
 
     manager: MediaDirectoryManager = MediaDirectoryManager()

@@ -1,6 +1,6 @@
 default:
   tags:
-    - ngc27-xyber-radio
+    - ngc27-echobot
 
 stages: [setup, lint, test, deploy]
 
@@ -62,11 +62,11 @@ test:
 #     - sleep 3
 #     - echo "Starting services with start_services.sh as gitlab-runner..."
 #     - chmod +x start_services.sh
-#     - nohup ./start_services.sh > /tmp/xyber_radio_startup.log 2>&1 &
+#     - nohup ./start_services.sh > /tmp/echobot_startup.log 2>&1 &
 #     - echo "Services startup initiated in background"
 #     - sleep 15
 #     - echo "Checking service status..."
 #     - tmux list-sessions
 #     - echo "✅ Services deployed successfully"
 #     - echo "Startup log:"
-#     - tail -20 /tmp/xyber_radio_startup.log || echo "No startup log found"
+#     - tail -20 /tmp/echobot_startup.log || echo "No startup log found"
