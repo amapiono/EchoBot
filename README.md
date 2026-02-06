@@ -2,6 +2,12 @@
 
 EchoBot is a powerful, microservices-based platform for creating and managing dynamic, AI-driven YouTube live streams. It offers real-time content generation, OBS integration, and a flexible scheduling system to deliver engaging and interactive broadcasts.
 
+## 🎥 See it in Action
+
+Check out a working example of EchoBot in action:
+
+- **[XyLumira YouTube Channel](https://www.youtube.com/@XyLumira)** - A live streaming agent powered by EchoBot
+
 ## ✨ Features
 
 - **Microservices Architecture**: A scalable and maintainable architecture with dedicated services for each core functionality.
